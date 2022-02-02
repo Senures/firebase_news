@@ -56,83 +56,101 @@ class _HomeViewState extends State<HomeView> {
                               ],
                             ),
                           ),
-                          Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: 70.0, right: 30.0),
-                              child: PopupMenuButton(
-                                  icon: const Icon(
-                                    Icons.language,
-                                    color: Colors.black54,
-                                  ),
-                                  itemBuilder: (context) => [
-                                        PopupMenuItem(
-                                          child: Text(
-                                            "England",
-                                            style: TextStyle(
-                                                color: hc.language == "en"
-                                                    ? const Color(0xffffcdd2)
-                                                    : Colors.black54,
-                                                fontWeight: hc.language == "en"
-                                                    ? FontWeight.bold
-                                                    : FontWeight.normal),
-                                          ),
-                                          onTap: () {
-                                            hc.languageSet("en");
-                                            hc.languageChanged();
-                                          },
-                                          value: 1,
-                                        ),
-                                        PopupMenuItem(
+                          Container(
+                            padding: EdgeInsets.only(right: 40.0),
+                            alignment: Alignment.topRight,
+                            width: 200.0,
+                            // color: Colors.red,
+                            child: Column(
+                              children: [
+                                PopupMenuButton(
+                                    icon: const Icon(
+                                      Icons.language,
+                                      color: Colors.black54,
+                                    ),
+                                    itemBuilder: (context) => [
+                                          PopupMenuItem(
                                             child: Text(
-                                              "France",
+                                              "England",
                                               style: TextStyle(
-                                                  color: hc.language == "fr"
+                                                  color: hc.language == "en"
                                                       ? const Color(0xffffcdd2)
                                                       : Colors.black54,
                                                   fontWeight:
-                                                      hc.language == "fr"
+                                                      hc.language == "en"
                                                           ? FontWeight.bold
                                                           : FontWeight.normal),
                                             ),
-                                            value: 2,
                                             onTap: () {
-                                              hc.languageSet("fr");
+                                              hc.languageSet("en");
                                               hc.languageChanged();
-                                            }),
-                                        PopupMenuItem(
-                                            child: Text("Germany",
+                                            },
+                                            value: 1,
+                                          ),
+                                          PopupMenuItem(
+                                              child: Text(
+                                                "France",
                                                 style: TextStyle(
-                                                    color: hc.language == "de"
+                                                    color: hc.language == "fr"
                                                         ? const Color(
                                                             0xffffcdd2)
                                                         : Colors.black54,
                                                     fontWeight: hc.language ==
-                                                            "de"
+                                                            "fr"
                                                         ? FontWeight.bold
-                                                        : FontWeight.normal)),
-                                            value: 2,
-                                            onTap: () {
-                                              hc.languageSet("de");
-                                              hc.languageChanged();
-                                            }),
-                                        PopupMenuItem(
-                                            child: Text(
-                                              "Japanese",
-                                              style: TextStyle(
-                                                  color: hc.language == "jp"
-                                                      ? const Color(0xffffcdd2)
-                                                      : Colors.black54,
-                                                  fontWeight:
-                                                      hc.language == "jp"
+                                                        : FontWeight.normal),
+                                              ),
+                                              value: 2,
+                                              onTap: () {
+                                                hc.languageSet("fr");
+                                                hc.languageChanged();
+                                              }),
+                                          PopupMenuItem(
+                                              child: Text("Germany",
+                                                  style: TextStyle(
+                                                      color: hc.language == "de"
+                                                          ? const Color(
+                                                              0xffffcdd2)
+                                                          : Colors.black54,
+                                                      fontWeight: hc.language ==
+                                                              "de"
                                                           ? FontWeight.bold
-                                                          : FontWeight.normal),
-                                            ),
-                                            value: 2,
-                                            onTap: () {
-                                              hc.languageSet("jp");
-                                              hc.languageChanged();
-                                            }),
-                                      ])),
+                                                          : FontWeight.normal)),
+                                              value: 2,
+                                              onTap: () {
+                                                hc.languageSet("de");
+                                                hc.languageChanged();
+                                              }),
+                                          PopupMenuItem(
+                                              child: Text(
+                                                "Japanese",
+                                                style: TextStyle(
+                                                    color: hc.language == "jp"
+                                                        ? const Color(
+                                                            0xffffcdd2)
+                                                        : Colors.black54,
+                                                    fontWeight: hc.language ==
+                                                            "jp"
+                                                        ? FontWeight.bold
+                                                        : FontWeight.normal),
+                                              ),
+                                              value: 2,
+                                              onTap: () {
+                                                hc.languageSet("jp");
+                                                hc.languageChanged();
+                                              }),
+                                        ]),
+                                Switch(
+                                    inactiveThumbColor: Colors.grey,
+                                    inactiveTrackColor: Colors.grey.shade400,
+                                    activeColor: Colors.pink.shade100,
+                                    value: hc.isSwitch,
+                                    onChanged: (bool value) {
+                                      hc.switchTap();
+                                    }),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),

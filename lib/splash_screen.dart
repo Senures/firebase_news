@@ -6,7 +6,7 @@ import 'package:news_app/onboarding/onboardingscreen_one.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
-  SharedPreferences? preferences; //
+
   SplashScreen({Key? key}) : super(key: key);
 
   @override
@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (isShowBoard == null || isShowBoard == false) {
         Get.to(OnboardingScreenOne());
       } else {
-        Get.to(LoginView());
+        Get.to(HomeView());
       }
     });
     super.initState();

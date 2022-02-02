@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_app/entity/anamodel.dart';
 import 'package:news_app/entity/category_model.dart';
@@ -12,22 +13,11 @@ class HomeController extends GetxController {
   NewsModel? searchValue;
   String? language;
   NewsModel? languagevalue;
-  int bottomindex=0;
+  int bottomindex = 0;
+  bool isSwitch = false;
 
   String? kelime;
-  /* List<String> categorylist = [
-    "business",
-    "entertainment",
-    "environment",
-    "food",
-    "health",
-    "politics",
-    "science",
-    "sports",
-    "technology",
-    "top",
-    "world"
-  ];*/
+
   List<CategoryModel> categorylist = [
     CategoryModel(categories: "business", active: true),
     CategoryModel(categories: "entertainment", active: true),
@@ -51,11 +41,11 @@ class HomeController extends GetxController {
     super.onInit();
   }
 
-  bottomSelect(int val){
-  bottomindex=val;
-  update();
-
+  bottomSelect(int val) {
+    bottomindex = val;
+    update();
   }
+
   languageSet(String lg) {
     language = lg;
     update();
@@ -104,8 +94,12 @@ class HomeController extends GetxController {
     searchValue = await HomeService().searchApi(controller.text, language!);
     liste = searchValue!.results;
     setIsLoading(false);
-    
   }
 
-  
+  switchTap() {
+    isSwitch = !isSwitch;
+    print("**********" + isSwitch.toString());
+    Get.changeTheme(Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
+    update();
+  }
 }

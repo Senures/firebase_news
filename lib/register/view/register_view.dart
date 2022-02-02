@@ -1,43 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:glass/glass.dart';
-import 'package:news_app/home/view/home_view.dart';
-import 'package:news_app/login/controller/login_controller.dart';
-import 'package:news_app/register/view/register_view.dart';
+import 'package:glass/src/GlassWidget.dart';
+import 'package:news_app/register/controller/register_controller.dart';
 
-class LoginView extends StatefulWidget {
-  LoginView({Key? key}) : super(key: key);
+class RegisterView extends StatelessWidget {
+  const RegisterView({Key? key}) : super(key: key);
 
-  @override
-  State<LoginView> createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<LoginController>(
-        init: LoginController(),
-        builder: (lc) {
+    return GetBuilder<RegisterController>(
+        init: RegisterController(),
+        builder: (rc) {
           return Scaffold(
               backgroundColor: const Color(0xffe57373),
               body: Center(
                 child: Container(
                   child: Form(
-                    key: lc.formkeylo,
+                    key: rc.formkey,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Padding(
                           padding: EdgeInsets.all(15.0),
                           child: Text(
-                            "Already have an account ?",
+                            "Create a New Account",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.normal,
                                 fontSize: 17.0),
                           ),
                         ),
-                        const Text("LOGIN",
+                        const Text("REGISTER",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -54,15 +47,16 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           child: TextFormField(
                             cursorColor: Colors.white,
-                            controller: lc.emailcontroller,
+                            controller: rc.emailcontroller,
                             validator: (value) {
+                              //hata döndürüyor ondan null en son döndü
                               if (value == null || value.isEmpty) {
-                                return "Lütfen e-mail giriniz";
+                                return 'Please enter mail';
                               } else if (!value.contains("@")) //! değili
                               {
                                 return "Geçersiz mail adresi";
                               }
-                              return null;
+                              return null; //burda problem yok ,hata boş demek
                             },
                             decoration: const InputDecoration(
                               border: InputBorder.none,
@@ -83,10 +77,10 @@ class _LoginViewState extends State<LoginView> {
                             color: Colors.black12,
                           ),
                           child: TextFormField(
-                            obscureText: lc.obscure,
+                            obscureText: rc.obscure,
                             obscuringCharacter: "*",
                             cursorColor: Colors.white,
-                            controller: lc.passwordcontroller,
+                            controller: rc.passwordcontroller,
                             validator: (value) {
                               if (value == null) {
                                 return "şifre gir";
@@ -98,10 +92,10 @@ class _LoginViewState extends State<LoginView> {
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
                                   onPressed: () {
-                                    lc.onTapSuffix();
+                                    rc.onTapSuffix();
                                   },
                                   icon: const Icon(Icons.remove_red_eye),
-                                  color: lc.obscure == true
+                                  color: rc.obscure == true
                                       ? Colors.black38
                                       : Colors.white),
                               border: InputBorder.none,
@@ -114,50 +108,77 @@ class _LoginViewState extends State<LoginView> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Container(
-                            // color: Colors.blue,
-                            width: Get.size.width,
-                            child: TextButton(
-                              style: ButtonStyle(
-                                alignment: Alignment.centerRight,
-                              ),
-                              onPressed: () {
-                                Get.to(RegisterView());
-                              },
-                              child: const Text(
-                                "Create a new account",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15.0),
+                        Container(
+                          margin: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.only(left: 10.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: Colors.black12,
+                          ),
+                          child: TextFormField(
+                            obscureText: rc.obscureconfirm,
+                            obscuringCharacter: "*",
+                            cursorColor: Colors.white,
+                            controller: rc.confirmpasswordcontroller,
+                            validator: (value) {
+                              if (value == null) {
+                                return "şifre gir";
+                              } else if (value.length < 6) {
+                                return "şifre en az 6 karakter";
+                              } else if (value != rc.passwordcontroller.text) {
+                                return "şifreler uyuşmuyor";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                  onPressed: () {
+                                    rc.onTapConfirmSuffix();
+                                  },
+                                  icon: const Icon(Icons.remove_red_eye),
+                                  color: rc.obscureconfirm == true
+                                      ? Colors.black38
+                                      : Colors.white),
+                              border: InputBorder.none,
+                              hintText: "Confirm Password",
+                              hintStyle: const TextStyle(color: Colors.white),
+                              icon: const Icon(
+                                Icons.lock,
+                                color: Colors.white,
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
-                        TextButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.black12)),
-                          onPressed: () {
-                            if (lc.formkeylo.currentState!.validate()) {
-                              //burda herşey null gelmişse yani hepsi dogruysa hatasızsa,yan, hata yoksa
-                              lc.login();
+                        InkWell(
+                          onTap: () {
+                            if (rc.formkey.currentState!.validate()) {
+                              //burda herşey null gelmişse yani hepsi dogruysa hatasızsa
+                              rc.register();
                             }
                           },
-                          child: Text(
-                            "LOGIN",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )
+                          child: Container(
+                              alignment: Alignment.center,
+                              width: 100.0,
+                              height: 40.0,
+                              margin: const EdgeInsets.all(20.0),
+                              padding: const EdgeInsets.all(5.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(35.0),
+                                color: Colors.black12,
+                              ),
+                              child: const Text(
+                                "REGISTER",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold),
+                              )),
+                        ),
                       ],
                     ),
                   ),
                   width: 300.0,
-                  //height: 450.0,
-                  //color: Color(0xffe57373),
+                  //color: Colors.amber,
                 ).asGlass(
                   clipBorderRadius: BorderRadius.circular(15.0),
                 ),
