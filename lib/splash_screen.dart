@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_app/home/view/home_view.dart';
@@ -6,7 +7,6 @@ import 'package:news_app/onboarding/onboardingscreen_one.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
-
   SplashScreen({Key? key}) : super(key: key);
 
   @override
@@ -16,6 +16,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
+    final auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
     SharedPreferences pref;
     Future.delayed(Duration(seconds: 3), () async {
       pref = await SharedPreferences
@@ -23,9 +25,11 @@ class _SplashScreenState extends State<SplashScreen> {
       bool? isShowBoard =
           pref.getBool("savedBoard"); //daha önce kaydedilen değeri getir
       if (isShowBoard == null || isShowBoard == false) {
-        Get.to(OnboardingScreenOne());
+        Get.to(() => OnboardingScreenOne());
+      } else if (user != null) {
+        Get.to(() => HomeView());
       } else {
-        Get.to(HomeView());
+        Get.to(() => LoginView());
       }
     });
     super.initState();

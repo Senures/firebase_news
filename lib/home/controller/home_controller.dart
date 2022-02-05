@@ -1,11 +1,15 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_app/entity/anamodel.dart';
 import 'package:news_app/entity/category_model.dart';
 import 'package:news_app/home/service/home_service.dart';
+import 'package:news_app/login/view/login_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeController extends GetxController {
+  SharedPreferences? nesne; //sharred başlat
   bool isloading = true;
   List<Result>? liste;
   NewsModel? value;
@@ -14,7 +18,7 @@ class HomeController extends GetxController {
   String? language;
   NewsModel? languagevalue;
   int bottomindex = 0;
-  bool isSwitch = false;
+  bool isSwitch = true;
 
   String? kelime;
 
@@ -37,6 +41,8 @@ class HomeController extends GetxController {
   void onInit() {
     languageSet("en"); //ilk açıldıgın otomatik en gelmesi
     homeApiGet(); //içinde zaten value bekleniyor başına await gerek yok
+    //switchSave();
+    //switchGet();
 
     super.onInit();
   }
@@ -98,8 +104,26 @@ class HomeController extends GetxController {
 
   switchTap() {
     isSwitch = !isSwitch;
-    print("**********" + isSwitch.toString());
-    Get.changeTheme(Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
+    switchSave();
+
+    //Get.changeTheme(Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
+    Get.changeTheme(isSwitch ? ThemeData.light() : ThemeData.dark());
+
     update();
+  }
+
+  cikisYap() async {
+    await FirebaseAuth.instance.signOut();
+
+    Get.to(() => LoginView());
+  }
+
+  switchSave() async {
+    nesne = await SharedPreferences.getInstance();
+    nesne!.setBool("kaydedilen", isSwitch);
+  }
+
+  switchGet() {
+    nesne!.getBool("kaydedilen");
   }
 }

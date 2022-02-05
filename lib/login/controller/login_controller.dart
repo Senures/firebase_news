@@ -9,7 +9,7 @@ class LoginController extends GetxController {
   //TextEditingController confirmpasswordcontroller = TextEditingController();
   bool isRegister = true;
   bool obscure = true;
-  var formkeylo=GlobalKey<FormState>();
+
   // bool obscureconfirm = true;
 
   onTapSuffix() {
@@ -17,15 +17,15 @@ class LoginController extends GetxController {
     update();
   }
 
-
-
   login() async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: emailcontroller.text, password: passwordcontroller.text);
       if (userCredential != null) {
-        Get.to(HomeView());
+        Get.to(()=>HomeView());
+        emailcontroller.clear();
+        passwordcontroller.clear();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

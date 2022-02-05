@@ -8,6 +8,7 @@ class RegisterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<FormState> formkey = GlobalKey<FormState>();
     return GetBuilder<RegisterController>(
         init: RegisterController(),
         builder: (rc) {
@@ -16,7 +17,7 @@ class RegisterView extends StatelessWidget {
               body: Center(
                 child: Container(
                   child: Form(
-                    key: rc.formkey,
+                    key: formkey,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -46,6 +47,7 @@ class RegisterView extends StatelessWidget {
                             color: Colors.black12,
                           ),
                           child: TextFormField(
+                            style: const TextStyle(color: Colors.white),
                             cursorColor: Colors.white,
                             controller: rc.emailcontroller,
                             validator: (value) {
@@ -77,6 +79,7 @@ class RegisterView extends StatelessWidget {
                             color: Colors.black12,
                           ),
                           child: TextFormField(
+                            style: const TextStyle(color: Colors.white),
                             obscureText: rc.obscure,
                             obscuringCharacter: "*",
                             cursorColor: Colors.white,
@@ -116,6 +119,7 @@ class RegisterView extends StatelessWidget {
                             color: Colors.black12,
                           ),
                           child: TextFormField(
+                            style: const TextStyle(color: Colors.white),
                             obscureText: rc.obscureconfirm,
                             obscuringCharacter: "*",
                             cursorColor: Colors.white,
@@ -149,31 +153,21 @@ class RegisterView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            if (rc.formkey.currentState!.validate()) {
-                              //burda herşey null gelmişse yani hepsi dogruysa hatasızsa
+                        TextButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.black12)),
+                          onPressed: () {
+                            if (formkey.currentState!.validate()) {
+                              //burda herşey null gelmişse yani hepsi dogruysa hatasızsa,yan, hata yoksa
                               rc.register();
                             }
                           },
-                          child: Container(
-                              alignment: Alignment.center,
-                              width: 100.0,
-                              height: 40.0,
-                              margin: const EdgeInsets.all(20.0),
-                              padding: const EdgeInsets.all(5.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(35.0),
-                                color: Colors.black12,
-                              ),
-                              child: const Text(
-                                "REGISTER",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                        ),
+                          child:const  Text(
+                            "REGISTER",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
                       ],
                     ),
                   ),

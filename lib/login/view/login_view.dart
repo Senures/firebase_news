@@ -15,6 +15,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
+    GlobalKey<FormState> formkeylo = GlobalKey<FormState>();
     return GetBuilder<LoginController>(
         init: LoginController(),
         builder: (lc) {
@@ -23,7 +24,7 @@ class _LoginViewState extends State<LoginView> {
               body: Center(
                 child: Container(
                   child: Form(
-                    key: lc.formkeylo,
+                    key: formkeylo,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -53,6 +54,7 @@ class _LoginViewState extends State<LoginView> {
                             color: Colors.black12,
                           ),
                           child: TextFormField(
+                            style: const TextStyle(color: Colors.white),
                             cursorColor: Colors.white,
                             controller: lc.emailcontroller,
                             validator: (value) {
@@ -83,6 +85,7 @@ class _LoginViewState extends State<LoginView> {
                             color: Colors.black12,
                           ),
                           child: TextFormField(
+                            style: const TextStyle(color: Colors.white),
                             obscureText: lc.obscure,
                             obscuringCharacter: "*",
                             cursorColor: Colors.white,
@@ -120,7 +123,7 @@ class _LoginViewState extends State<LoginView> {
                             // color: Colors.blue,
                             width: Get.size.width,
                             child: TextButton(
-                              style: ButtonStyle(
+                              style: const ButtonStyle(
                                 alignment: Alignment.centerRight,
                               ),
                               onPressed: () {
@@ -142,12 +145,13 @@ class _LoginViewState extends State<LoginView> {
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.black12)),
                           onPressed: () {
-                            if (lc.formkeylo.currentState!.validate()) {
+                            if (formkeylo.currentState!.validate()) {
                               //burda herşey null gelmişse yani hepsi dogruysa hatasızsa,yan, hata yoksa
                               lc.login();
+                             
                             }
                           },
-                          child: Text(
+                          child: const Text(
                             "LOGIN",
                             style: TextStyle(color: Colors.white),
                           ),
